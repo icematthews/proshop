@@ -28,7 +28,16 @@ export const removeFromCart = (id) => (dispatch, getState) => {
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
 
-export const saveShippingAddress = (data) => (dispatch) => {
+export const saveShippingAddress = (data) => async(dispatch) => {
+
+
+  const zipcode = {
+    zipcode: data.postalCode
+  }
+
+  const calculateFee = await axios.post('/api/orders/calculate-fee', zipcode)
+  console.log(calculateFee)
+  
   dispatch({
     type: CART_SAVE_SHIPPING_ADDRESS,
     payload: data,
